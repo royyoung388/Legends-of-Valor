@@ -1,9 +1,9 @@
 package factory;
 
-import bean.monster.Dragon;
-import bean.monster.Exoskeleton;
-import bean.monster.Monster;
-import bean.monster.Spirit;
+import model.monster.Dragon;
+import model.monster.Exoskeleton;
+import model.monster.Monster;
+import model.monster.Spirit;
 import utils.Dice;
 import utils.FileUtils;
 

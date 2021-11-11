@@ -1,4 +1,4 @@
-package bean.hero;
+package model.hero;
 
 /**
  * One type of hero

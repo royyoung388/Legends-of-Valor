@@ -1,6 +1,4 @@
-package bean;
-
-import bean.Changeable;
+package model;
 
 /***
  * Base class for monster and hero

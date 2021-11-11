@@ -1,6 +1,7 @@
 package utils;
 
-import bean.board.Marker;
+import model.board.LegendMarker;
+import model.board.Marker;
 
 import java.util.Random;
 

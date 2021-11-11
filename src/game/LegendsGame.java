@@ -1,15 +1,15 @@
 package game;
 
-import bean.board.Marker;
+import model.board.LegendMarker;
+import model.board.Marker;
 import controller.MarketController;
 import controller.MarketControllerImpl;
 import factory.HeroFactory;
 import model.MarketModel;
-import bean.hero.Hero;
+import model.hero.Hero;
 import state.FightState;
 import state.WalkState;
 import utils.Dice;
-import utils.LegendMarker;
 import utils.Text;
 import view.MarketView;
 

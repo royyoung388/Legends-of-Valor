@@ -1,4 +1,4 @@
-package bean;
+package model;
 
 /**
  * Interface for item which is merchantable

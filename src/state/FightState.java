@@ -2,7 +2,7 @@ package state;
 
 import controller.*;
 import factory.MonsterFactory;
-import bean.monster.Monster;
+import model.monster.Monster;
 import utils.Text;
 import view.FightView;
 import view.MonsterView;

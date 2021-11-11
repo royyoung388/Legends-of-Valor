@@ -1,16 +1,16 @@
 package controller;
 
-import bean.hero.Hero;
-import bean.item.Armor;
-import bean.item.Potion;
-import bean.item.Spell;
-import bean.item.Weapon;
+import model.hero.Hero;
+import model.item.Armor;
+import model.item.Potion;
+import model.item.Spell;
+import model.item.Weapon;
 
 import java.util.List;
 
 /**
  * team controller, control the team.
- * includes the bean.hero.Hero list, backpack, money.
+ * includes the model.hero.Hero list, backpack, money.
  */
 public interface TeamController {
 

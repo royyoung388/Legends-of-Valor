@@ -1,9 +1,9 @@
-package bean;
+package model.item;
 
-import bean.item.Potion;
-import bean.item.Armor;
-import bean.item.Spell;
-import bean.item.Weapon;
+import model.item.Potion;
+import model.item.Armor;
+import model.item.Spell;
+import model.item.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;

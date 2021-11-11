@@ -1,6 +1,6 @@
 package factory;
 
-import bean.item.Potion;
+import model.item.Potion;
 import utils.Dice;
 import utils.FileUtils;
 

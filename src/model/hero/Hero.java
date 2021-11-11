@@ -1,16 +1,16 @@
-package bean.hero;
+package model.hero;
 
-import bean.Changeable;
-import bean.Character;
+import model.Changeable;
+import model.Character;
 
 /**
- * Base class for bean.hero.Hero
+ * Base class for model.hero.Hero
  */
 public abstract class Hero extends Character implements Cloneable {
     public static final int PALADIN = 0;
     public static final int WARRIOR = 1;
     public static final int SORCERER = 2;
-    public static final String[] TYPE = {"bean.hero.Paladin", "bean.item.Warrior", "bean.hero.Sorcerer"};
+    public static final String[] TYPE = {"model.hero.Paladin", "model.item.Warrior", "model.hero.Sorcerer"};
 
     private final int type;
     private int mana;

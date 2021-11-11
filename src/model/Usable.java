@@ -1,4 +1,4 @@
-package bean;
+package model;
 
 /**
  * interface for usable item

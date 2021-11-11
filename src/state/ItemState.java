@@ -1,8 +1,8 @@
 package state;
 
-import bean.item.Armor;
-import bean.item.Potion;
-import bean.item.Weapon;
+import model.item.Armor;
+import model.item.Potion;
+import model.item.Weapon;
 import game.LegendsGame;
 import utils.Config;
 

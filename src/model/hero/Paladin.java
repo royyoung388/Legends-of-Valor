@@ -1,6 +1,4 @@
-package bean.hero;
-
-import bean.hero.Hero;
+package model.hero;
 
 /**
  * one type of hero

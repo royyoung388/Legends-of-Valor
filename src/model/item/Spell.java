@@ -1,10 +1,10 @@
-package bean.item;
+package model.item;
 
-import bean.Castable;
-import bean.Character;
+import model.Castable;
+import model.Character;
 
 /**
- * bean.item.Item, spell
+ * model.item.Item, spell
  */
 public class Spell extends Item implements Castable {
     public static final int ICE = 0;

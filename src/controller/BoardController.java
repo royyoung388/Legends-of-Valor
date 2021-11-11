@@ -1,6 +1,6 @@
 package controller;
 
-import bean.board.Marker;
+import model.board.Marker;
 
 /***
  * Board controller, control the board
@@ -24,9 +24,9 @@ public interface BoardController {
 
     void setPlayer(int row, int column);
 //
-//    void setMarker(int row, int column, bean.board.Marker mark);
+//    void setMarker(int row, int column, model.board.Marker mark);
 //
-//    bean.board.Marker getMarker(int row, int column);
+//    model.board.Marker getMarker(int row, int column);
 //
 //    int getRow();
 //

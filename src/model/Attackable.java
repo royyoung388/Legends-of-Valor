@@ -1,4 +1,4 @@
-package bean;
+package model;
 
 /**
  * Interface, be used on weapon

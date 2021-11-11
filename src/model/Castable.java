@@ -1,4 +1,4 @@
-package bean;
+package model;
 
 /**
  * Used on spell. To affect character.

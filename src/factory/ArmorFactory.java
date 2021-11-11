@@ -1,6 +1,6 @@
 package factory;
 
-import bean.item.Armor;
+import model.item.Armor;
 import utils.Dice;
 import utils.FileUtils;
 
@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /***
- * bean.item.Armor factory, to create armor from file
+ * model.item.Armor factory, to create armor from file
  */
 public class ArmorFactory {
     private String path;

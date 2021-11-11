@@ -1,4 +1,4 @@
-package utils;
+package model.board;
 
 /**
  * Mpa marker for legend game

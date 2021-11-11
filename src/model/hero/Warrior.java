@@ -1,6 +1,4 @@
-package bean.item;
-
-import bean.hero.Hero;
+package model.hero;
 
 /**
  * One type of warrior

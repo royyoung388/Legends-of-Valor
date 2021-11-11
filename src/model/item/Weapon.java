@@ -1,7 +1,7 @@
-package bean.item;
+package model.item;
 
-import bean.Attackable;
-import bean.Changeable;
+import model.Attackable;
+import model.Changeable;
 
 /**
  * weapon, item

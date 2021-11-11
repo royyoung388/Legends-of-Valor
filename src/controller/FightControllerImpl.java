@@ -1,9 +1,9 @@
 package controller;
 
-import bean.item.Armor;
-import bean.item.Potion;
-import bean.item.Spell;
-import bean.item.Weapon;
+import model.item.Armor;
+import model.item.Potion;
+import model.item.Spell;
+import model.item.Weapon;
 import view.FightView;
 
 import java.util.Iterator;

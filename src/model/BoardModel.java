@@ -1,7 +1,7 @@
 package model;
 
-import bean.board.Cell;
-import bean.board.Marker;
+import model.board.Cell;
+import model.board.Marker;
 
 /***
  * board.Board, made by cells.

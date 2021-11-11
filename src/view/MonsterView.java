@@ -1,6 +1,6 @@
 package view;
 
-import bean.monster.Monster;
+import model.monster.Monster;
 
 /**
  * MVC: view. To show information about monster

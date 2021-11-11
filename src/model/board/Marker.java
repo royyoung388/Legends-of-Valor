@@ -1,4 +1,4 @@
-package bean.board;
+package model.board;
 
 /**
  * map marker

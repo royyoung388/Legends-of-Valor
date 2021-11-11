@@ -1,6 +1,6 @@
 package factory;
 
-import bean.item.Weapon;
+import model.item.Weapon;
 import utils.Dice;
 import utils.FileUtils;
 

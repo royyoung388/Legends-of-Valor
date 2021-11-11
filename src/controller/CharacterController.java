@@ -1,7 +1,7 @@
 package controller;
 
-import bean.Castable;
-import bean.Character;
+import model.Castable;
+import model.Character;
 
 /**
  * Base class for character controller

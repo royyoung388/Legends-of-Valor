@@ -1,6 +1,6 @@
 package view;
 
-import bean.Character;
+import model.Character;
 import controller.CharacterController;
 import controller.MonsterController;
 import controller.TeamController;
@@ -36,7 +36,7 @@ public class FightView {
         int choice = 0;
         do {
             System.out.println(characterController.getCharacter().getName());
-            System.out.println("Input Your Action: (1: Attack. 2: Cast bean.item.Spell. 3: Use potion. 4: Change weapon. 5: Change bean.item.Armor.): ");
+            System.out.println("Input Your Action: (1: Attack. 2: Cast model.item.Spell. 3: Use potion. 4: Change weapon. 5: Change model.item.Armor.): ");
             choice = scanner.nextInt();
         } while (choice < 1 || choice > 5);
         return choice;
@@ -66,7 +66,7 @@ public class FightView {
     }
 
     public void itemLog(Character character, String name) {
-        stringBuilder.append(" * ").append(character.getName()).append(" |Used bean.item.Item| ").append(name).append("\n");
+        stringBuilder.append(" * ").append(character.getName()).append(" |Used model.item.Item| ").append(name).append("\n");
     }
 
     public void regainLog(Character character, int hp, int mp) {
@@ -102,7 +102,7 @@ public class FightView {
         team.showTeam();
 
         if (monsters != null) {
-            System.out.println("------ bean.monster.Monster Team ------");
+            System.out.println("------ model.monster.Monster Team ------");
             System.out.println("   " + MonsterView.header());
             for (int i = 0; i < monsters.size(); i++) {
                 if (monsters.get(i).isDied())

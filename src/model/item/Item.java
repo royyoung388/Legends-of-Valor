@@ -1,6 +1,6 @@
-package bean.item;
+package model.item;
 
-import bean.Merchantable;
+import model.Merchantable;
 
 /**
  * Base class for item

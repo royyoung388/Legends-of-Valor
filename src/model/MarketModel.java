@@ -1,10 +1,10 @@
 package model;
 
-import bean.item.*;
 import factory.ArmorFactory;
 import factory.PotionFactory;
 import factory.SpellFactory;
 import factory.WeaponFactory;
+import model.item.*;
 
 import java.util.List;
 

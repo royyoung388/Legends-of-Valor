@@ -1,4 +1,4 @@
-package bean.monster;
+package model.monster;
 
 /**
  * One type of monster

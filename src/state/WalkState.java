@@ -1,10 +1,10 @@
 package state;
 
-import bean.board.Marker;
+import model.board.LegendMarker;
+import model.board.Marker;
 import controller.BoardController;
 import game.RPGGame;
 import utils.Dice;
-import utils.LegendMarker;
 import utils.Text;
 
 /**

@@ -1,6 +1,6 @@
 package controller;
 
-import bean.Castable;
+import model.Castable;
 import utils.Dice;
 
 /**

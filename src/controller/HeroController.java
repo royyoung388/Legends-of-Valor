@@ -1,13 +1,13 @@
 package controller;
 
-import bean.hero.Hero;
-import bean.item.Armor;
-import bean.item.Potion;
-import bean.item.Spell;
-import bean.item.Weapon;
+import model.hero.Hero;
+import model.item.Armor;
+import model.item.Potion;
+import model.item.Spell;
+import model.item.Weapon;
 
 /**
- * bean.hero.Hero controller. Some action for hero
+ * model.hero.Hero controller. Some action for hero
  */
 public interface HeroController extends CharacterController {
 

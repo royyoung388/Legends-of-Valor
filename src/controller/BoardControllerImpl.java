@@ -1,9 +1,9 @@
 package controller;
 
-import bean.board.Marker;
+import model.board.LegendMarker;
+import model.board.Marker;
 import model.BoardModel;
 import utils.Dice;
-import utils.LegendMarker;
 import view.BoardView;
 
 /***

@@ -1,11 +1,11 @@
 package state;
 
-import bean.item.Potion;
+import model.item.Potion;
 import controller.MarketController;
 import controller.TeamController;
-import bean.item.Armor;
-import bean.item.Spell;
-import bean.item.Weapon;
+import model.item.Armor;
+import model.item.Spell;
+import model.item.Weapon;
 import game.LegendsGame;
 import utils.Config;
 import utils.Text;

@@ -1,4 +1,4 @@
-package bean;
+package model;
 
 /**
  * Change interface. To change attribute

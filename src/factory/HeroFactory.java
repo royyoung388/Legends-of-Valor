@@ -1,9 +1,9 @@
 package factory;
 
-import bean.hero.Hero;
-import bean.hero.Paladin;
-import bean.hero.Sorcerer;
-import bean.item.Warrior;
+import model.hero.Hero;
+import model.hero.Paladin;
+import model.hero.Sorcerer;
+import model.hero.Warrior;
 import utils.FileUtils;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * bean.hero.Hero factory, to create bean.hero.Hero class.
+ * model.hero.Hero factory, to create model.hero.Hero class.
  */
 public class HeroFactory {
     public final String paladin, sorcerer, warrior;

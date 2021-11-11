@@ -1,7 +1,7 @@
-package bean.item;
+package model.item;
 
 /***
- * bean.item.Armor class
+ * model.item.Armor class
  */
 public class Armor extends Item {
     private final int reduction;

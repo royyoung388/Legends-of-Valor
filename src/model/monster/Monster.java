@@ -1,6 +1,6 @@
-package bean.monster;
+package model.monster;
 
-import bean.Character;
+import model.Character;
 
 /**
  * Base class for monster
@@ -9,7 +9,7 @@ public abstract class Monster extends Character {
     public static final int DRAGON = 0;
     public static final int SPIRIT = 1;
     public static final int EXOSKELETON = 2;
-    public static final String[] TYPE = {"bean.monster.Dragon", "bean.monster.Spirit", "bean.monster.Exoskeleton"};
+    public static final String[] TYPE = {"model.monster.Dragon", "model.monster.Spirit", "model.monster.Exoskeleton"};
 
     private final int type;
 

@@ -1,6 +1,6 @@
 package controller;
 
-import bean.monster.Monster;
+import model.monster.Monster;
 
 /**
  * MVC: monster controller
