@@ -1,11 +1,11 @@
 package game;
 
-import model.board.LegendMarker;
-import model.board.Marker;
 import controller.MarketController;
 import controller.MarketControllerImpl;
 import factory.HeroFactory;
 import model.MarketModel;
+import model.board.LegendMarker;
+import model.board.Marker;
 import model.hero.Hero;
 import state.FightState;
 import state.WalkState;
@@ -18,20 +18,18 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-/**
- * legend game
- */
-public class LegendsGame extends RPGGame {
+public class LegendsOfValor extends RPGGame {
     private Scanner scanner;
     private MarketController marketController;
+    private int lane = 0;
     // record the game status. 0 for quit.
     private int gameFlag = 1;
 
-    public LegendsGame() {
+    public LegendsOfValor() {
         this(8, 8);
     }
 
-    public LegendsGame(int row, int column) {
+    public LegendsOfValor(int row, int column) {
         super(row, column);
         scanner = new Scanner(System.in);
         marketController = new MarketControllerImpl(new MarketView(), new MarketModel());
@@ -101,11 +99,22 @@ public class LegendsGame extends RPGGame {
                 teamController.addHero(heroList.get(Integer.parseInt(id) - 1));
                 teamController.showTeam();
             }
-        } while (!id.equals("0") || teamController.size() == 0);
+        } while (!id.equals("0") || teamController.size() < 3);
     }
 
     public MarketController getMarketController() {
         return marketController;
+    }
+
+    // get current lane to do action.
+    // lane starts from 0
+    public int getLane() {
+        return lane;
+    }
+
+    // set lane
+    public void setLane(int lane) {
+        this.lane = lane;
     }
 
     @Override

@@ -2,6 +2,7 @@ package state;
 
 import controller.*;
 import factory.MonsterFactory;
+import game.LegendsOfValor;
 import model.monster.Monster;
 import utils.Text;
 import view.FightView;
@@ -18,9 +19,12 @@ public class FightState extends BaseState {
 
     @Override
     public void doAction(Context context, String action) {
-        TeamController team = context.getRpgGame().getTeamController();
+        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
+        TeamController team = game.getTeamController();
         FightController fightController = new FightControllerImpl(
-                team, initMonster(team.size(), team.getHeroController(0).getLevel()), new FightView());
+                team, initMonster(team.size(),
+                team.getHeroController(0).getLevel()), new FightView(),
+                game.getLane());
         fightController.start();
         context.popState();
     }

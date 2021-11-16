@@ -1,9 +1,9 @@
 package state;
 
+import game.LegendsOfValor;
 import model.item.Armor;
 import model.item.Potion;
 import model.item.Weapon;
-import game.LegendsGame;
 import utils.Config;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class ItemState extends BaseState {
     public void doAction(Context context, String action) {
         super.doAction(context, action);
         action = action.toUpperCase();
-        LegendsGame game = (LegendsGame) context.getRpgGame();
+        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
 
         String[] s = action.split("[\\s\\t]+");
 
@@ -57,7 +57,7 @@ public class ItemState extends BaseState {
 
     @Override
     public void showPrompt(Context context) {
-        LegendsGame game = (LegendsGame) context.getRpgGame();
+        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
         game.getTeamController().showTeam();
         game.getTeamController().showItem();
         System.out.println("Input ItemType ItemID and HeroID to apply the item on hero. (Input 0 to quit)");
