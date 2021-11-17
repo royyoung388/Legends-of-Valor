@@ -1,12 +1,12 @@
 package state;
 
-import game.LegendsOfValor;
 import model.item.Potion;
 import controller.MarketController;
 import controller.TeamController;
 import model.item.Armor;
 import model.item.Spell;
 import model.item.Weapon;
+import game.LegendsGame;
 import utils.Config;
 import utils.Text;
 
@@ -21,9 +21,9 @@ public class MarketState extends BaseState {
 
         action = action.toUpperCase();
         String[] strings = action.split("\\s+");
-        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
-        MarketController marketController = game.getMarketController();
-        TeamController teamController = game.getTeamController();
+        LegendsGame legendsGame = (LegendsGame) context.getRpgGame();
+        MarketController marketController = legendsGame.getMarketController();
+        TeamController teamController = legendsGame.getTeamController();
 
         if (Integer.parseInt(strings[0]) == Config.QUIT) {
             context.popState();
@@ -41,25 +41,25 @@ public class MarketState extends BaseState {
             case Config.WEAPON_ID -> {
                 if (teamController.getMoney() >= marketController.getWeaponList().get(index).getCost()) {
                     Weapon weapon = marketController.buyWeapon(index);
-                    game.getTeamController().buyWeapon(weapon);
+                    legendsGame.getTeamController().buyWeapon(weapon);
                 }
             }
             case Config.ARMOR_ID -> {
                 if (teamController.getMoney() >= marketController.getArmorList().get(index).getCost()) {
                     Armor armor = marketController.buyArmor(index);
-                    game.getTeamController().buyArmor(armor);
+                    legendsGame.getTeamController().buyArmor(armor);
                 }
             }
             case Config.POTION_ID -> {
                 if (teamController.getMoney() >= marketController.getPotionList().get(index).getCost()) {
                     Potion potion = marketController.buyPotion(index);
-                    game.getTeamController().buyPotion(potion);
+                    legendsGame.getTeamController().buyPotion(potion);
                 }
             }
             case Config.SPELL_ID -> {
                 if (teamController.getMoney() >= marketController.getSpellList().get(index).getCost()) {
                     Spell spell = marketController.buySpell(index);
-                    game.getTeamController().buySpell(spell);
+                    legendsGame.getTeamController().buySpell(spell);
                 }
             }
             case 0 -> context.popState();
@@ -77,7 +77,7 @@ public class MarketState extends BaseState {
 //            e.printStackTrace();
 //        }
 
-        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
+        LegendsGame game = (LegendsGame) context.getRpgGame();
         game.getMarketController().showAll();
         System.out.println("Your Team Money: " + game.getTeamController().getMoney());
         System.out.println("Input TYPE ID to choose the item: (Input 5 to sell item. Input 0 to quit)");

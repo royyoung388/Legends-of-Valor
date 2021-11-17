@@ -34,7 +34,7 @@ public class Weapon extends Item implements Attackable {
     }
 
     @Override
-    public void attack(Changeable user, Changeable opponent) {
+    public void attack(Changeable opponent) {
 
     }
 

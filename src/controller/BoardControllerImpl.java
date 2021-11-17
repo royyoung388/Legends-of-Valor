@@ -67,6 +67,8 @@ public class BoardControllerImpl implements BoardController {
         return boardView.getPColumn();
     }
 
+    public void setCell(int row, int column, String str){boardModel.createCell(row,column,str);}
+
     @Override
     public void setMarker(int row, int column, Marker marker) {
         boardModel.setMarker(row, column, marker);

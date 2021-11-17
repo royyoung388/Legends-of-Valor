@@ -15,17 +15,15 @@ import java.util.List;
  */
 public class FightControllerImpl implements FightController {
     private TeamController team;
-    private int lane;
     private List<MonsterController> monsters;
     private FightView fightView;
     private Iterator<HeroController> heroControllerIterator;
     private Iterator<MonsterController> monsterControllerIterator;
 
-    public FightControllerImpl(TeamController team, List<MonsterController> monsters, FightView fightView, int lane) {
+    public FightControllerImpl(TeamController team, List<MonsterController> monsters, FightView fightView) {
         this.team = team;
         this.monsters = monsters;
         this.fightView = fightView;
-        this.lane = lane;
     }
 
     @Override
