@@ -22,9 +22,10 @@ public class FightState extends BaseState {
         LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
         TeamController team = game.getTeamController();
         FightController fightController = new FightControllerImpl(
-                team, initMonster(team.size(),
-                team.getHeroController(0).getLevel()), new FightView(),
-                game.getLane());
+                team,
+                team.getHeroController(game.getLane()),
+                initMonster(1, team.getHeroController(game.getLane()).getLevel()).get(0),
+                new FightView());
         fightController.start();
         context.popState();
     }

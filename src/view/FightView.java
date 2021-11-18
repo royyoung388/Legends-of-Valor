@@ -1,12 +1,11 @@
 package view;
 
-import model.Character;
 import controller.CharacterController;
+import controller.HeroController;
 import controller.MonsterController;
-import controller.TeamController;
+import model.Character;
 import utils.Text;
 
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -98,22 +97,23 @@ public class FightView {
         System.out.println("+++++++++++++++++++++++++++++++++");
     }
 
-    public void showInformation(TeamController team, List<MonsterController> monsters) {
-        team.showTeam();
+    public void showInformation(HeroController hero, MonsterController monster) {
+        hero.show();
+        System.out.println("===== Your Team =====");
+        System.out.println("   " + HeroView.header());
+        System.out.printf("%3d%s\n", 1, hero);
+        System.out.println("======================\n");
 
-        if (monsters != null) {
-            System.out.println("------ model.monster.Monster Team ------");
+        if (monster != null) {
+            System.out.println("------ Monster Team ------");
             System.out.println("   " + MonsterView.header());
-            for (int i = 0; i < monsters.size(); i++) {
-                if (monsters.get(i).isDied())
-                    continue;
-                System.out.printf("%3d%s\n", i + 1, monsters.get(i));
-            }
+            if (!monster.isDied())
+                System.out.printf("%3d%s\n", 1, monster);
             System.out.println("--------------------\n");
         }
     }
 
-    public void showInformation(TeamController team) {
-        showInformation(team, null);
+    public void showInformation(HeroController hero) {
+        showInformation(hero, null);
     }
 }

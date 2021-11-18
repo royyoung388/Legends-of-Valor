@@ -6,32 +6,26 @@ import model.item.Spell;
 import model.item.Weapon;
 import view.FightView;
 
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * controller for fight
  * control the procedure of fight
  */
 public class FightControllerImpl implements FightController {
     private TeamController team;
-    private int lane;
-    private List<MonsterController> monsters;
+    private HeroController hero;
+    private MonsterController monster;
     private FightView fightView;
-    private Iterator<HeroController> heroControllerIterator;
-    private Iterator<MonsterController> monsterControllerIterator;
 
-    public FightControllerImpl(TeamController team, List<MonsterController> monsters, FightView fightView, int lane) {
+    public FightControllerImpl(TeamController team, HeroController hero, MonsterController monster, FightView fightView) {
         this.team = team;
-        this.monsters = monsters;
+        this.hero = hero;
+        this.monster = monster;
         this.fightView = fightView;
-        this.lane = lane;
     }
 
     @Override
     public boolean isFightEnd() {
-        return monsters.stream().allMatch(CharacterController::isDied) ||
-                team.getHeroControllerList().stream().allMatch(CharacterController::isDied);
+        return monster.isDied() || hero.isDied();
     }
 
     @Override
@@ -45,129 +39,85 @@ public class FightControllerImpl implements FightController {
 
     @Override
     public void round() {
-        heroControllerIterator = team.getHeroControllerList().iterator();
-        monsterControllerIterator = monsters.iterator();
-
         // hero attack first
-        for (HeroController heroController : team.getHeroControllerList()) {
-            if (heroController.isDied())
-                continue;
+        showLog();
+        fightView.showInformation(hero, monster);
 
-            showLog();
-            fightView.showInformation(team, monsters);
-
-            MonsterController monsterController = nextMonster();
-            int action = FightView.QUIT;
-            while (action == FightView.QUIT) {
-                // choose action
-                fightView.showEnemy(monsterController);
-                action = fightView.chooseAction(heroController);
-                switch (action) {
-                    // regular attack
-                    case FightView.ATTACK -> {
-                        if (monsterController.isDodge()) {
-                            fightView.dodgeLog(heroController.getCharacter(), monsterController.getCharacter());
-                        } else {
-                            int damage =
-                                    monsterController.damageDealt(heroController.getDamage());
-                            fightView.attackLog(heroController.getCharacter(), monsterController.getCharacter(), damage);
-                        }
+        int action = FightView.QUIT;
+        while (action == FightView.QUIT) {
+            // choose action
+            fightView.showEnemy(monster);
+            action = fightView.chooseAction(hero);
+            switch (action) {
+                // regular attack
+                case FightView.ATTACK -> {
+                    if (monster.isDodge()) {
+                        fightView.dodgeLog(hero.getCharacter(), monster.getCharacter());
+                    } else {
+                        int damage =
+                                monster.damageDealt(hero.getDamage());
+                        fightView.attackLog(hero.getCharacter(), monster.getCharacter(), damage);
                     }
-                    case FightView.CAST -> {
-                        team.showSpellList();
-                        action = fightView.choose(team.getSpellList().size());
-                        if (action == FightView.QUIT)
-                            continue;
-                        Spell spell = team.getSpellList().get(action - 1);
-                        if (heroController.getCharacter().getMana() < spell.getMana() ||
-                                heroController.getCharacter().getLevel() < spell.getLevel())
-                            continue;
-                        int damage = team.useSpell(heroController, monsterController, spell);
-                        fightView.castLog(heroController.getCharacter(), monsterController.getCharacter(),
-                                spell.getName(), damage);
-                    }
-                    case FightView.POTION -> {
-                        team.showPotionList();
-                        action = fightView.choose(team.getPotionList().size());
-                        if (action == FightView.QUIT)
-                            continue;
-                        Potion potion = team.getPotionList().get(action - 1);
-                        if (heroController.getCharacter().getLevel() < potion.getLevel())
-                            continue;
-                        team.usePotion(heroController, action - 1);
-                        fightView.itemLog(heroController.getCharacter(), potion.getName());
-                    }
-                    case FightView.WEAPON -> {
-                        team.showWeaponList();
-                        action = fightView.choose(team.getWeaponList().size());
-                        if (action == FightView.QUIT)
-                            continue;
-                        Weapon weapon = team.getWeaponList().get(action - 1);
-                        if (heroController.getCharacter().getLevel() < weapon.getLevel())
-                            continue;
-                        heroController.equipWeapon(team.getWeaponList().get(action - 1));
-                        fightView.itemLog(heroController.getCharacter(), weapon.getName());
-                    }
-                    case FightView.ARMOR -> {
-                        team.showArmorList();
-                        action = fightView.choose(team.getArmorList().size());
-                        if (action == FightView.QUIT)
-                            continue;
-                        Armor armor = team.getArmorList().get(action - 1);
-                        if (heroController.getCharacter().getLevel() < armor.getLevel())
-                            continue;
-                        heroController.equipArmor(team.getArmorList().get(action - 1));
-                        fightView.itemLog(heroController.getCharacter(), armor.getName());
-                    }
+                }
+                case FightView.CAST -> {
+                    team.showSpellList();
+                    action = fightView.choose(team.getSpellList().size());
+                    if (action == FightView.QUIT)
+                        continue;
+                    Spell spell = team.getSpellList().get(action - 1);
+                    if (hero.getCharacter().getMana() < spell.getMana() ||
+                            hero.getCharacter().getLevel() < spell.getLevel())
+                        continue;
+                    int damage = team.useSpell(hero, monster, spell);
+                    fightView.castLog(hero.getCharacter(), monster.getCharacter(),
+                            spell.getName(), damage);
+                }
+                case FightView.POTION -> {
+                    team.showPotionList();
+                    action = fightView.choose(team.getPotionList().size());
+                    if (action == FightView.QUIT)
+                        continue;
+                    Potion potion = team.getPotionList().get(action - 1);
+                    if (hero.getCharacter().getLevel() < potion.getLevel())
+                        continue;
+                    team.usePotion(hero, action - 1);
+                    fightView.itemLog(hero.getCharacter(), potion.getName());
+                }
+                case FightView.WEAPON -> {
+                    team.showWeaponList();
+                    action = fightView.choose(team.getWeaponList().size());
+                    if (action == FightView.QUIT)
+                        continue;
+                    Weapon weapon = team.getWeaponList().get(action - 1);
+                    if (hero.getCharacter().getLevel() < weapon.getLevel())
+                        continue;
+                    hero.equipWeapon(team.getWeaponList().get(action - 1));
+                    fightView.itemLog(hero.getCharacter(), weapon.getName());
+                }
+                case FightView.ARMOR -> {
+                    team.showArmorList();
+                    action = fightView.choose(team.getArmorList().size());
+                    if (action == FightView.QUIT)
+                        continue;
+                    Armor armor = team.getArmorList().get(action - 1);
+                    if (hero.getCharacter().getLevel() < armor.getLevel())
+                        continue;
+                    hero.equipArmor(team.getArmorList().get(action - 1));
+                    fightView.itemLog(hero.getCharacter(), armor.getName());
                 }
             }
         }
 
         // monster attack
-        for (MonsterController monster : monsters) {
-            if (monster.isDied())
-                continue;
-
-            HeroController heroController = nextHero();
-            int damage = heroController.damageDealt(monster.getDamage());
-            fightView.attackLog(monster.getCharacter(), heroController.getCharacter(), damage);
-        }
+        int damage = hero.damageDealt(monster.getDamage());
+        fightView.attackLog(monster.getCharacter(), hero.getCharacter(), damage);
 
         // regain HP and MP
-        for (HeroController heroController : team.getHeroControllerList()) {
-            if (!heroController.isDied()) {
-                fightView.regainLog(heroController.getCharacter(), heroController.hpRegain(), heroController.mpRegain());
-            }
+        if (!hero.isDied()) {
+            fightView.regainLog(hero.getCharacter(), hero.hpRegain(), hero.mpRegain());
         }
-
-//        showLog();
-//        fightView.showInformation(team, monsters);
     }
 
-
-    private HeroController nextHero() {
-        HeroController heroController = null;
-        while (heroControllerIterator.hasNext()) {
-            heroController = heroControllerIterator.next();
-            if (!heroControllerIterator.hasNext() && !isFightEnd())
-                heroControllerIterator = team.getHeroControllerList().iterator();
-            if (!heroController.isDied())
-                break;
-        }
-        return heroController;
-    }
-
-    private MonsterController nextMonster() {
-        MonsterController monsterController = null;
-        while (monsterControllerIterator.hasNext()) {
-            monsterController = monsterControllerIterator.next();
-            if (!monsterControllerIterator.hasNext() && !isFightEnd())
-                monsterControllerIterator = monsters.iterator();
-            if (!monsterController.isDied())
-                break;
-        }
-        return monsterController;
-    }
 
     @Override
     public void fightStart() {
@@ -179,18 +129,15 @@ public class FightControllerImpl implements FightController {
         // hero win
         if (isHeroWin()) {
             // gain exp and money
-            List<HeroController> heroControllerList = team.getHeroControllerList();
-            for (int i = 0; i < heroControllerList.size(); i++) {
-                HeroController controller = heroControllerList.get(i);
-                if (!controller.isDied()) {
-                    team.gainMoney(monsters.get(i).getCharacter().getLevel() * 100);
-                    controller.gainExp(2);
-                    if (controller.levelUp())
-                        fightView.levelUp(controller.getCharacter());
-                } else {
-                    controller.revive();
-                }
+            if (!hero.isDied()) {
+                team.gainMoney(monster.getCharacter().getLevel() * 100);
+                hero.gainExp(2);
+                if (hero.levelUp())
+                    fightView.levelUp(hero.getCharacter());
+            } else {
+                hero.revive();
             }
+
         } else {
             // hero lose, lose money
             team.setMoney(team.getMoney() / 2);
@@ -199,9 +146,7 @@ public class FightControllerImpl implements FightController {
         // show result
         fightView.showLog();
         fightView.showResult(isHeroWin());
-        fightView.showInformation(team);
-
-
+        fightView.showInformation(hero);
     }
 
     @Override
@@ -211,10 +156,8 @@ public class FightControllerImpl implements FightController {
 
     @Override
     public boolean isHeroWin() {
-        for (HeroController heroController : team.getHeroControllerList()) {
-            if (!heroController.isDied())
-                return true;
-        }
+        if (!hero.isDied())
+            return true;
         return false;
     }
 }
