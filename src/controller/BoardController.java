@@ -2,6 +2,7 @@ package controller;
 
 import model.board.Marker;
 
+
 /***
  * Board controller, control the board
  */
@@ -10,6 +11,7 @@ public interface BoardController {
 
     Marker moveTo(int row, int column);
 
+    Marker getCell(int row, int column);
     void show();
 
     int getRow();

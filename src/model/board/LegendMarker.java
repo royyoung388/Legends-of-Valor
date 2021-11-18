@@ -7,8 +7,8 @@ public class LegendMarker {
     public static final String PLAYER = "\033[31;5;1;43m P \033[0m";
     public static final String BLOCK = "\033[41mXXX\033[0m";
     public static final String MARKET = "\033[34m M \033[0m";
-    public static final String COMMON = "\033[0m";
-
+//    public static final String COMMON = "\033[0m";
+    public static final String MONSTER = "\033[34m Mo \033[0m";
     public static final String PLAYER_1 = "H1";
     public static final String PLAYER_2 = "H2";
     public static final String PLAYER_3 = "H3";
