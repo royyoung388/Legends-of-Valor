@@ -1,11 +1,11 @@
 package game;
 
-import model.board.LegendMarker;
-import model.board.Marker;
 import controller.MarketController;
 import controller.MarketControllerImpl;
 import factory.HeroFactory;
 import model.MarketModel;
+import model.board.LegendMarker;
+import model.board.Marker;
 import model.hero.Hero;
 import state.FightState;
 import state.WalkState;
@@ -18,20 +18,18 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-/**
- * legend game
- */
-public class LegendsGame extends RPGGame {
+public class LegendsOfValor extends RPGGame {
     private Scanner scanner;
     private MarketController marketController;
+    private int lane = 0;
     // record the game status. 0 for quit.
     private int gameFlag = 1;
 
-    public LegendsGame() {
+    public LegendsOfValor() {
         this(8, 8);
     }
 
-    public LegendsGame(int row, int column) {
+    public LegendsOfValor(int row, int column) {
         super(row, column);
         scanner = new Scanner(System.in);
         marketController = new MarketControllerImpl(new MarketView(), new MarketModel());
@@ -42,46 +40,21 @@ public class LegendsGame extends RPGGame {
         int column = boardController.getColumn();
         Marker[][] markers = new Marker[row][column];
 
-        // set up nexus
-        for (int j = 0; j < row; j++){
-            if (j!=2 && j!=5) {
-                markers[0][j] = new Marker(LegendMarker.NEXUS);
-                boardController.setCell(0,j,LegendMarker.NEXUS);
-                markers[7][j] = new Marker(LegendMarker.NEXUS);
-                boardController.setCell(7,j,LegendMarker.NEXUS);
-            }
-        }
-
-        // set up inaccessible
-        for (int i = 0; i < row; i++){
-            markers[i][2] = new Marker(LegendMarker.INACCESSIBLE);
-            boardController.setCell(i,2,LegendMarker.INACCESSIBLE);
-            markers[i][5] = new Marker(LegendMarker.INACCESSIBLE);
-            boardController.setCell(i,5,LegendMarker.INACCESSIBLE);
-        }
-
-        // set up plain, bush, cave, koulou
-        for (int i = 1; i < row-1; i++) {
+        for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (j != 2 && j != 5) {
-                    Marker m = Dice.rollMarker(true);
-                    markers[i][j] = m;
-                    boardController.setCell(i,j,m.getMark());
-                }
+                markers[i][j] = Dice.rollMarker(true);
             }
         }
 
-        // Hero start at (7,0) (7,3) (7,6)
-        markers[7][0].setMark(LegendMarker.PLAYER_1);
-        markers[7][3].setMark(LegendMarker.PLAYER_2);
-        markers[7][6].setMark(LegendMarker.PLAYER_3);
-//            boardController.setPlayer(0, 0);
+        // Player start at (0,0)
+        markers[0][0].setMark(LegendMarker.PLAYER);
+        boardController.setPlayer(0, 0);
 
-//        // no block for player
-//        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
-//                && markers[1][0].getMark().equals(LegendMarker.BLOCK)) {
-//            markers[0][1].setMark(LegendMarker.COMMON);
-//        }
+        // no block for player
+        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
+                && markers[1][0].getMark().equals(LegendMarker.BLOCK)) {
+            markers[0][1].setMark(LegendMarker.COMMON);
+        }
 
         boardController.fill(markers);
     }
@@ -119,19 +92,29 @@ public class LegendsGame extends RPGGame {
         heroList.addAll(sorcerer);
 
         String id = null;
-        // only three heroes
-        for (int i=0; i<3; i++){
+        do {
             System.out.println("\nInput number to choose your legend: (press 0 to stop choosing)");
             id = scanner.next();
             if (Integer.parseInt(id) > 0 && Integer.parseInt(id) < heroList.size()) {
                 teamController.addHero(heroList.get(Integer.parseInt(id) - 1));
                 teamController.showTeam();
             }
-        }
+        } while (!id.equals("0") || teamController.size() < 3);
     }
 
     public MarketController getMarketController() {
         return marketController;
+    }
+
+    // get current lane to do action.
+    // lane starts from 0
+    public int getLane() {
+        return lane;
+    }
+
+    // set lane
+    public void setLane(int lane) {
+        this.lane = lane;
     }
 
     @Override
