@@ -23,6 +23,8 @@ public interface BoardController {
     void setMarker(int row, int column, Marker marker);
 
     void setPlayer(int row, int column);
+
+    void setCell(int i, int j, String nexus);
 //
 //    void setMarker(int row, int column, model.board.Marker mark);
 //

@@ -1,7 +1,6 @@
 package model;
 
-import model.board.Cell;
-import model.board.Marker;
+import model.board.*;
 
 /***
  * board.Board, made by cells.
@@ -13,9 +12,9 @@ public class BoardModel {
 
     public BoardModel(int row, int column) {
         cells = new Cell[row][column];
-        for (int i = 0; i < row; i++)
-            for (int j = 0; j < column; j++)
-                cells[i][j] = new Cell();
+//        for (int i = 0; i < row; i++)
+//            for (int j = 0; j < column; j++)
+//                cells[i][j] = new Cell();
 
         this.row = row;
         this.column = column;
@@ -51,6 +50,33 @@ public class BoardModel {
 
     public Cell getCell(int row, int column) {
         return cells[row][column];
+    }
+
+    public Cell[][] getCells(){
+        return cells;
+    }
+
+    // create the cell for cells[row,column]
+    public void createCell(int row, int column, String str) {
+        switch (str){
+            case LegendMarker.NEXUS:
+                cells[row][column] = new Nexus_Cell();
+                break;
+            case LegendMarker.INACCESSIBLE:
+                cells[row][column] = new Inaccessible_Cell();
+                break;
+            case LegendMarker.PLAIN:
+                cells[row][column] = new Plain_Cell();
+                break;
+            case LegendMarker.BUSH:
+                cells[row][column] = new Bush_Cell();
+                break;
+            case LegendMarker.CAVE:
+                cells[row][column] = new Cave_Cell();
+                break;
+            case LegendMarker.KOULOU:
+                cells[row][column] = new Koulou_Cell();
+        }
     }
 
     public int getRow() {

@@ -1,7 +1,7 @@
 package state;
 
 import controller.TeamController;
-import game.LegendsOfValor;
+import game.LegendsGame;
 import utils.Config;
 import utils.Text;
 
@@ -46,7 +46,7 @@ public class SellState extends BaseState {
 //            e.printStackTrace();
 //        }
 
-        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
+        LegendsGame game = (LegendsGame) context.getRpgGame();
         game.getTeamController().showItem();
         System.out.println("Your Team Money: " + game.getTeamController().getMoney());
         System.out.println("Input TYPE ID to sell the item: (Input 0 to quit)");

@@ -5,7 +5,7 @@ package game;
  */
 public class Game {
     public static void main(String[] args) {
-        RPGGame game = new LegendsOfValor();
+        RPGGame game = new LegendsGame();
         game.start();
     }
 }

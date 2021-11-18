@@ -16,14 +16,18 @@ public class Dice {
 
     public static Marker rollMarker(boolean withBlock) {
         int type = Dice.roll(10);
-        // 20% non-accessible cell
-        if (type < 2 && withBlock) {
-            return new Marker(LegendMarker.BLOCK);
-        } else if (type < 5) {
-            // 30% market cell
-            return new Marker(LegendMarker.MARKET);
+        // 40% plain cell
+        if (type < 4 && withBlock) {
+            return new Marker(LegendMarker.PLAIN);
+        } else if (type < 6) {
+            // 20% Bush cell
+            return new Marker(LegendMarker.BUSH);
+        } else if (type < 8){
+            // 20% Cave cell
+            return new Marker(LegendMarker.CAVE);
+        } else{
+            // 20% Koulou cell
+            return new Marker(LegendMarker.KOULOU);
         }
-        // default common cell
-        return new Marker();
     }
 }
