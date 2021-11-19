@@ -64,22 +64,22 @@ public class BoardView {
 
     private static void createOutterCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col) {
         switch (map[row/3][col].getType()){
-            case 1:
+            case Cell.NEXUS:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.BLUE+'N'+ColorUtils.RESET));
                 break;
-            case 2:
+            case Cell.INACCESSIBLE:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.PURPLE+'P'+ColorUtils.RESET));
                 break;
-            case 3:
+            case Cell.PLAIN:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.BLACK+'P'+ColorUtils.RESET));
                 break;
-            case 4:
+            case Cell.BUSH:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.GREEN+'B'+ColorUtils.RESET));
                 break;
-            case 5:
+            case Cell.CAVE:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.YELLOW+'C'+ColorUtils.RESET));
                 break;
-            case 6:
+            case Cell.KOULOU:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.RED+'K'+ColorUtils.RESET));
                 break;
         }

@@ -1,6 +1,5 @@
 package state;
 
-import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import factory.HeroFactory;
 import model.Character;
 import model.board.LegendMarker;
@@ -35,10 +34,10 @@ public class WalkState extends BaseState {
         }
 
         Marker newCell = boardController.moveTo(row, column);
-        Marker oldCell = boardController.getCell(row, column);
+        Cell oldCell = boardController.getCell(row, column);
 
         //Leave the old cell
-        switch (oldCell.getMark()) {
+        switch (oldCell.getMark().getMark()) {
             case LegendMarker.BUSH -> hero.setDexterity(hero.getDexterity()*10/11);
             case LegendMarker.KOULOU -> hero.setStrength(hero.getStrength()*10/11);
             case LegendMarker.CAVE -> hero.setAgility(hero.getAgility()*10/11);

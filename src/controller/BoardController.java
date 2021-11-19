@@ -14,7 +14,7 @@ public interface BoardController {
 
     Marker moveTo(int row, int column);
 
-    Marker getCell(int row, int column);
+    Marker getMarker(int row, int column);
 
     void show();
 

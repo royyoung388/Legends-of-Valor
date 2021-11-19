@@ -49,6 +49,11 @@ public class BoardControllerImpl implements BoardController {
     }
 
     @Override
+    public Marker getMarker(int row, int column) {
+        return null;
+    }
+
+    @Override
     public void show() {
         boardView.show(boardModel);
     }
