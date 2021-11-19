@@ -35,29 +35,29 @@ public class LegendsOfValor extends RPGGame {
         marketController = new MarketControllerImpl(new MarketView(), new MarketModel());
     }
 
-    private void initBoard() {
-        int row = boardController.getRow();
-        int column = boardController.getColumn();
-        Marker[][] markers = new Marker[row][column];
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                markers[i][j] = Dice.rollMarker(true);
-            }
-        }
-
-        // Player start at (0,0)
-        markers[0][0].setMark(LegendMarker.PLAYER);
-        boardController.setPlayer(0, 0);
-
-        // no block for player
-        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
-                && markers[1][0].getMark().equals(LegendMarker.BLOCK)) {
-            markers[0][1].setMark(LegendMarker.COMMON);
-        }
-
-        boardController.fill(markers);
-    }
+//    private void initBoard() {
+//        int row = boardController.getRow();
+//        int column = boardController.getColumn();
+//        Marker[][] markers = new Marker[row][column];
+//
+//        for (int i = 0; i < row; i++) {
+//            for (int j = 0; j < column; j++) {
+//                markers[i][j] = Dice.rollMarker(true);
+//            }
+//        }
+//
+//        // Player start at (0,0)
+//        markers[0][0].setMark(LegendMarker.PLAYER);
+//        boardController.setPlayer(0, 0);
+//
+//        // no block for player
+//        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
+//                && markers[1][0].getMark().equals(LegendMarker.BLOCK)) {
+//            markers[0][1].setMark(LegendMarker.COMMON);
+//        }
+//
+//        boardController.fill(markers);
+//    }
 
     private void chooseHero() {
         HeroFactory factory = new HeroFactory();
@@ -142,7 +142,7 @@ public class LegendsOfValor extends RPGGame {
 
     @Override
     protected void initGame() {
-        initBoard();
+        boardController.initBoard();
     }
 
     @Override
