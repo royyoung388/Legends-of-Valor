@@ -1,19 +1,21 @@
 package game;
 
-import controller.MarketController;
-import controller.MarketControllerImpl;
+import controller.*;
 import factory.HeroFactory;
+import factory.MonsterFactory;
+import model.Character;
 import model.MarketModel;
-import model.board.LegendMarker;
-import model.board.Marker;
 import model.hero.Hero;
+import model.monster.Monster;
 import state.FightState;
 import state.WalkState;
-import utils.Dice;
 import utils.Text;
 import view.MarketView;
+import view.MonsterView;
 
+import javax.swing.text.Position;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +23,10 @@ import java.util.concurrent.TimeUnit;
 public class LegendsOfValor extends RPGGame {
     private Scanner scanner;
     private MarketController marketController;
+    private List<MonsterController> monsterControllerList;
+    private Iterator<MonsterController> monsterIter;
+    private Iterator<HeroController> heroIter;
+    // current lane
     private int lane = 0;
     // record the game status. 0 for quit.
     private int gameFlag = 1;
@@ -33,30 +39,109 @@ public class LegendsOfValor extends RPGGame {
         super(row, column);
         scanner = new Scanner(System.in);
         marketController = new MarketControllerImpl(new MarketView(), new MarketModel());
+        // init monster
+        monsterControllerList = new ArrayList<>(3);
+        for (Monster monster : new MonsterFactory().randomChoose(3, 1))
+            monsterControllerList.add(new MonsterControllerImpl(monster, new MonsterView()));
     }
 
-    private void initBoard() {
-        int row = boardController.getRow();
-        int column = boardController.getColumn();
-        Marker[][] markers = new Marker[row][column];
+    public MarketController getMarketController() {
+        return marketController;
+    }
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                markers[i][j] = Dice.rollMarker(true);
-            }
+    // get current lane to do action.
+    // lane starts from 0
+    public int getLane() {
+        return lane;
+    }
+
+    // set lane
+    public void setLane(int lane) {
+        this.lane = lane % 3;
+    }
+
+    /***
+     * get next character. The order of the result is:
+     * hero1 - hero2 - hero3 - monster1- monster2 - monster3 - null
+     * and then repeat
+     * Be careful when the hero or monster is died.
+     * {@link CharacterController#isDied()}
+     * @return
+     */
+    public CharacterController nextCharacter() {
+        if (monsterIter == null || heroIter == null) {
+            monsterIter = monsterControllerList.iterator();
+            heroIter = getTeamController().getHeroControllerList().iterator();
         }
 
-        // Player start at (0,0)
-        markers[0][0].setMark(LegendMarker.PLAYER);
-        boardController.setPlayer(0, 0);
+        // hero
+        if (heroIter.hasNext()) {
+            return heroIter.next();
+        } else if (monsterIter.hasNext()) {
+            // monster
+            return monsterIter.next();
+        } else {
+            // round end, reset
+            heroIter = getTeamController().getHeroControllerList().iterator();
+            monsterIter = monsterControllerList.iterator();
+            return null;
+        }
+    }
 
-        // no block for player
-        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
-                && markers[1][0].getMark().equals(LegendMarker.BLOCK)) {
-            markers[0][1].setMark(LegendMarker.COMMON);
+    /***
+     * get position for specific character
+     * @param character
+     * @return null if not found
+     */
+    public Position getPosition(CharacterController character) {
+        int index = getTeamController().getHeroControllerList().indexOf(character);
+        if (index != -1) {
+            return getBoardController().getPosition(index);
+        }
+        index = monsterControllerList.indexOf(character);
+        if (index != -1) {
+            return getBoardController().getPosition(index);
+        }
+        return null;
+    }
+
+    @Override
+    protected void initGame() {
+        getBoardController().init();
+    }
+
+    @Override
+    protected boolean isEnd() {
+        return gameFlag == 0;
+    }
+
+    @Override
+    public void quit() {
+        gameFlag = 0;
+        System.out.println(Text.THANKS);
+    }
+
+    @Override
+    public void start() {
+        System.out.println(Text.WELCOM);
+        System.out.println(Text.INSTRUCTION);
+        // wait for 2 seconds
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        boardController.fill(markers);
+        chooseHero();
+        context.addState(new WalkState());
+
+        while (!isEnd()) {
+            context.getState().showPrompt(context);
+            String action = null;
+            if (!(context.getState() instanceof FightState))
+                action = scanner.nextLine();
+            context.getState().doAction(context, action);
+        }
     }
 
     private void chooseHero() {
@@ -100,59 +185,5 @@ public class LegendsOfValor extends RPGGame {
                 teamController.showTeam();
             }
         } while (!id.equals("0") || teamController.size() < 3);
-    }
-
-    public MarketController getMarketController() {
-        return marketController;
-    }
-
-    // get current lane to do action.
-    // lane starts from 0
-    public int getLane() {
-        return lane;
-    }
-
-    // set lane
-    public void setLane(int lane) {
-        this.lane = lane;
-    }
-
-    @Override
-    public void start() {
-        System.out.println(Text.WELCOM);
-        System.out.println(Text.INSTRUCTION);
-        // wait for 2 seconds
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        chooseHero();
-        context.addState(new WalkState());
-
-        while (!isEnd()) {
-            context.getState().showPrompt(context);
-            String action = null;
-            if (!(context.getState() instanceof FightState))
-                action = scanner.nextLine();
-            context.getState().doAction(context, action);
-        }
-    }
-
-    @Override
-    protected void initGame() {
-        initBoard();
-    }
-
-    @Override
-    protected boolean isEnd() {
-        return gameFlag == 0;
-    }
-
-    @Override
-    public void quit() {
-        gameFlag = 0;
-        System.out.println(Text.THANKS);
     }
 }

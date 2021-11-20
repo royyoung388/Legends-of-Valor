@@ -36,9 +36,6 @@ public class FightState extends BaseState {
     }
 
     private List<MonsterController> initMonster(int count, int level) {
-        List<MonsterController> monsterControllerList = new ArrayList<>(count);
-        for (Monster monster : new MonsterFactory().randomChoose(count, level))
-            monsterControllerList.add(new MonsterControllerImpl(monster, new MonsterView()));
-        return monsterControllerList;
+
     }
 }
