@@ -2,6 +2,8 @@ package model;
 
 import model.board.*;
 
+import java.util.ArrayList;
+
 /***
  * board.Board, made by cells.
  * set the board size, and record the chess mark in the board
@@ -9,16 +11,52 @@ import model.board.*;
 public class BoardModel {
     private final Cell[][] cells;
     private int row, column;
+    private ArrayList<Position> hero_positions;
+    private ArrayList<Position> monster_positions;
 
     public BoardModel(int row, int column) {
         cells = new Cell[row][column];
 //        for (int i = 0; i < row; i++)
 //            for (int j = 0; j < column; j++)
 //                cells[i][j] = new Cell();
-
+        hero_positions = new ArrayList<Position>();
+        monster_positions = new ArrayList<Position>();
         this.row = row;
         this.column = column;
     }
+
+    public void setHero_positions(int index, Position p){
+        hero_positions.set(index, p);
+    }
+
+    public void setMonster_positions(int index, Position p){
+        monster_positions.set(index, p);
+    }
+
+    public void addHero_positions(Position p){
+        hero_positions.add(p);
+    }
+
+    public void addMonster_positions(Position p){
+        monster_positions.add(p);
+    }
+
+    public int getHero_num(){
+        return hero_positions.size();
+    }
+
+    public int getMonster_num(){
+        return monster_positions.size();
+    }
+
+    public Position getHero_positions(int index) {
+        return hero_positions.get(index);
+    }
+
+    public Position getMonster_positions(int index){
+        return monster_positions.get(index);
+    }
+
 
     public void fill() {
         fill(new Marker());

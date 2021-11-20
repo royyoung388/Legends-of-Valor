@@ -1,10 +1,11 @@
 package view;
-
 import model.BoardModel;
 import model.board.Cell;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.board.Position;
 import utils.ColorUtils;
 
 /***
@@ -40,26 +41,22 @@ public class BoardView {
         return "| " + component + " |   ";
     }
 
-    private static String getCellComponent(int row, int col){
-        if (row == 7 && col == 0){
-            return "H1   ";
-        }else if (row == 7 && col == 3){
-            return "H2   ";
-        }else if (row == 0 && col == 1){
-            return "   M1";
-        }else if (row == 0 && col == 4){
-            return "   M2";
-        }else if (row == 0 && col == 7){
-            return "   M3";
-        }else if (row == 7 && col == 6){
-            return "H3   ";
-        }else{
-            return "     ";
+    private static String getCellComponent(int row, int col, BoardModel board){
+        for (int i=0;i<board.getHero_num();i++){
+            if (row == board.getHero_positions(i).getRow() && col == board.getHero_positions(i).getColumn()){
+                return "H"+(i+1)+"   ";
+            }
         }
+        for (int i=0;i<board.getMonster_num();i++){
+            if (row == board.getMonster_positions(i).getRow() && col == board.getMonster_positions(i).getColumn()){
+                return "   "+"M"+(i+1);
+            }
+        }
+        return "     ";
     }
 
-    private static void createInnerCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col) {
-        String component = getCellComponent(row/3, col);
+    private static void createInnerCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col, BoardModel board) {
+        String component = getCellComponent(row/3, col, board);
         if (map[row/3][col].getType() == 2)
             component = "X X X";
         printableMap.get(row).append(getInnerCellStr(component));
@@ -67,22 +64,22 @@ public class BoardView {
 
     private static void createOutterCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col) {
         switch (map[row/3][col].getType()){
-            case 1:
+            case Cell.NEXUS:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.BLUE+'N'+ColorUtils.RESET));
                 break;
-            case 2:
+            case Cell.INACCESSIBLE:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.PURPLE+'P'+ColorUtils.RESET));
                 break;
-            case 3:
+            case Cell.PLAIN:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.BLACK+'P'+ColorUtils.RESET));
                 break;
-            case 4:
+            case Cell.BUSH:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.GREEN+'B'+ColorUtils.RESET));
                 break;
-            case 5:
+            case Cell.CAVE:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.YELLOW+'C'+ColorUtils.RESET));
                 break;
-            case 6:
+            case Cell.KOULOU:
                 printableMap.get(row).append(getOuterCellStr(ColorUtils.RED+'K'+ColorUtils.RESET));
                 break;
         }
@@ -100,7 +97,7 @@ public class BoardView {
                     if (row % 2 == 0){
                         createOutterCell(board.getCells(), printableMap, row, col);
                     }else{
-                        createInnerCell(board.getCells(), printableMap, row, col);
+                        createInnerCell(board.getCells(), printableMap, row, col, board);
                     }
 
                     if (col == size - 1)
@@ -111,7 +108,7 @@ public class BoardView {
                     if (row % 2 == 1){
                         createOutterCell(board.getCells(), printableMap, row, col);
                     }else{
-                        createInnerCell(board.getCells(), printableMap, row, col);
+                        createInnerCell(board.getCells(), printableMap, row, col, board);
                     }
 
                     if (col == size - 1)

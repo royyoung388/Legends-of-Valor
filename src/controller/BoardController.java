@@ -1,6 +1,9 @@
 package controller;
 
+import model.board.LegendMarker;
 import model.board.Marker;
+import model.board.Cell;
+import utils.Dice;
 
 
 /***
@@ -11,7 +14,8 @@ public interface BoardController {
 
     Marker moveTo(int row, int column);
 
-    Marker getCell(int row, int column);
+    Marker getMarker(int row, int column);
+
     void show();
 
     int getRow();
@@ -27,6 +31,10 @@ public interface BoardController {
     void setPlayer(int row, int column);
 
     void setCell(int i, int j, String nexus);
+
+    Cell getCell(int row, int col);
+
+    void initBoard();
 //
 //    void setMarker(int row, int column, model.board.Marker mark);
 //

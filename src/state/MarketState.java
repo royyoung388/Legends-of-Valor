@@ -6,7 +6,7 @@ import controller.TeamController;
 import model.item.Armor;
 import model.item.Spell;
 import model.item.Weapon;
-import game.LegendsGame;
+import game.LegendsOfValor;
 import utils.Config;
 import utils.Text;
 
@@ -21,7 +21,7 @@ public class MarketState extends BaseState {
 
         action = action.toUpperCase();
         String[] strings = action.split("\\s+");
-        LegendsGame legendsGame = (LegendsGame) context.getRpgGame();
+        LegendsOfValor legendsGame = (LegendsOfValor) context.getRpgGame();
         MarketController marketController = legendsGame.getMarketController();
         TeamController teamController = legendsGame.getTeamController();
 
@@ -77,7 +77,7 @@ public class MarketState extends BaseState {
 //            e.printStackTrace();
 //        }
 
-        LegendsGame game = (LegendsGame) context.getRpgGame();
+        LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
         game.getMarketController().showAll();
         System.out.println("Your Team Money: " + game.getTeamController().getMoney());
         System.out.println("Input TYPE ID to choose the item: (Input 5 to sell item. Input 0 to quit)");
