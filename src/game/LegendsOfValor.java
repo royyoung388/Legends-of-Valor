@@ -3,7 +3,6 @@ package game;
 import controller.*;
 import factory.HeroFactory;
 import factory.MonsterFactory;
-import model.Character;
 import model.MarketModel;
 import model.hero.Hero;
 import model.monster.Monster;
@@ -96,11 +95,11 @@ public class LegendsOfValor extends RPGGame {
     public Position getPosition(CharacterController character) {
         int index = getTeamController().getHeroControllerList().indexOf(character);
         if (index != -1) {
-            return getBoardController().getPosition(index);
+            return getBoardController().getHeroPosition(index);
         }
         index = monsterControllerList.indexOf(character);
         if (index != -1) {
-            return getBoardController().getPosition(index);
+            return getBoardController().getMonsterPosition(index);
         }
         return null;
     }
