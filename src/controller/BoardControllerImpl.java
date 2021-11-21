@@ -1,14 +1,18 @@
 package controller;
 
+import model.Character;
 import model.board.Cell;
 import model.board.LegendMarker;
 import model.board.Marker;
 import model.BoardModel;
 import model.board.Position;
+import model.hero.Hero;
+import model.monster.Monster;
 import utils.Dice;
 import view.BoardView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /***
  * Board controller implement.
@@ -18,12 +22,80 @@ public class BoardControllerImpl implements BoardController {
     private BoardView boardView;
     private BoardModel boardModel;
 
+    private ArrayList<Position> hero_positions;
+    private ArrayList<Position> monster_positions;
+    private ArrayList<Hero> herolist;
+    private ArrayList<Monster> monsterlist;
+    private int current_lane;
+
+    private final static int TOP_LANE = 0;
+    private final static int MID_LANE = 1;
+    private final static int BOT_LANE = 2;
 
     public BoardControllerImpl(BoardView boardView, BoardModel boardModel) {
         this.boardView = boardView;
         this.boardModel = boardModel;
+        hero_positions = new ArrayList<Position>();
+        monster_positions = new ArrayList<Position>();
+        herolist = new ArrayList<Hero>();
+        monsterlist = new ArrayList<Monster>();
+        current_lane = TOP_LANE;
     }
 
+    // for positions
+    public void setHero_positions(int index, Position p){
+        hero_positions.set(index, p);
+    }
+
+    public void setMonster_positions(int index, Position p){
+        monster_positions.set(index, p);
+    }
+
+    public void addHero_positions(Position p){
+        hero_positions.add(p);
+    }
+
+    public void addMonster_positions(Position p){
+        monster_positions.add(p);
+    }
+
+    public void removeHero_positions(int index) {hero_positions.remove(index);}
+
+    public void removeMonster_positions(int index) {monster_positions.remove(index);}
+
+    public int getHero_num(){
+        return hero_positions.size();
+    }
+
+    public int getMonster_num(){
+        return monster_positions.size();
+    }
+
+    public Position getHero_positions(int index) {
+        return hero_positions.get(index);
+    }
+
+    public Position getMonster_positions(int index){
+        return monster_positions.get(index);
+    }
+
+    // for hero and monster list
+    public void setHerolist(ArrayList<Hero> herolist){this.herolist = herolist;}
+
+    public void setMonsterlist(ArrayList<Monster> monsterlist){this.monsterlist = monsterlist;}
+
+    public void removeHerolist(int index){this.herolist.remove(index);}
+
+    public void removeMonsterlist(int index){this.monsterlist.remove(index);}
+
+    public Hero getHerolist(int index){return herolist.get(index);}
+
+    public Monster getMonsterlist(int index){return monsterlist.get(index);}
+
+    // for current lane
+    public void setCurrent_lane(int current_lane){this.current_lane = current_lane;}
+
+    public int getCurrent_lane(){return current_lane;}
 
     @Override
     public void fill(Marker[][] markers) {
@@ -55,7 +127,7 @@ public class BoardControllerImpl implements BoardController {
 
     @Override
     public void show() {
-        boardView.show(boardModel);
+        boardView.show(boardModel,this);
     }
 
     @Override
@@ -137,14 +209,14 @@ public class BoardControllerImpl implements BoardController {
 //            boardController.setPlayer(0, 0);
 
         // setup position for heroes
-        boardModel.addHero_positions(new Position(7,0));
-        boardModel.addHero_positions(new Position(7,3));
-        boardModel.addHero_positions(new Position(7,6));
+        addHero_positions(new Position(7,0));
+        addHero_positions(new Position(7,3));
+        addHero_positions(new Position(7,6));
 
         // setup position for monsters
-        boardModel.addMonster_positions(new Position(0,1));
-        boardModel.addMonster_positions(new Position(0,4));
-        boardModel.addMonster_positions(new Position(0,7));
+        addMonster_positions(new Position(0,1));
+        addMonster_positions(new Position(0,4));
+        addMonster_positions(new Position(0,7));
 
 //        // no block for player
 //        if (markers[0][1].getMark().equals(LegendMarker.BLOCK)
@@ -153,5 +225,54 @@ public class BoardControllerImpl implements BoardController {
 //        }
 
         fill(markers);
+    }
+
+    @Override
+    public ArrayList<Hero> find_fight_hero() {
+        return (ArrayList<Hero>) find_fight(0);
+    }
+
+    @Override
+    public ArrayList<Monster> find_fight_monster() {
+        return (ArrayList<Monster>) find_fight(1);
+    }
+
+    // find the fight team for heroes and monsters
+    public List<? extends Character> find_fight(int type){
+        ArrayList<Hero> fight_heroes = new ArrayList<Hero>();
+        ArrayList<Monster> fight_monsters = new ArrayList<Monster>();
+        for (int i=0;i<monster_positions.size();i++){
+            if (monster_positions.get(i).getColumn()==current_lane*3 || monster_positions.get(i).getColumn()==(current_lane*3+1)){
+                for (int j=0;j<hero_positions.size();j++){
+                    if (is_fight(monster_positions.get(i),hero_positions.get(j))){
+                        fight_heroes.add(herolist.get(j));
+                        if (fight_monsters.size()==0){
+                            fight_monsters.add(monsterlist.get(i));
+                        }
+                    }
+                }
+            }
+        }
+        if (type==0){
+            // return heroes  type = 0
+            return fight_heroes;
+        }else{
+            // return monsters  type = 1
+            return fight_monsters;
+        }
+    }
+
+    // judge whether hero and monster can fight
+    public boolean is_fight(Position h, Position m){
+        if (h.getRow() == m.getRow()){
+            if (Math.abs(h.getColumn()-m.getColumn())==1){
+                return true;
+            }
+        }else if (Math.abs(h.getRow()-m.getRow())==1){
+            if (Math.abs(h.getColumn()-m.getColumn())<=1){
+                return true;
+            }
+        }
+        return false;
     }
 }

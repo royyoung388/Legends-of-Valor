@@ -1,4 +1,5 @@
 package view;
+import controller.BoardControllerImpl;
 import model.BoardModel;
 import model.board.Cell;
 
@@ -41,7 +42,7 @@ public class BoardView {
         return "| " + component + " |   ";
     }
 
-    private static String getCellComponent(int row, int col, BoardModel board){
+    private static String getCellComponent(int row, int col, BoardControllerImpl board){
         for (int i=0;i<board.getHero_num();i++){
             if (row == board.getHero_positions(i).getRow() && col == board.getHero_positions(i).getColumn()){
                 return "H"+(i+1)+"   ";
@@ -55,7 +56,7 @@ public class BoardView {
         return "     ";
     }
 
-    private static void createInnerCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col, BoardModel board) {
+    private static void createInnerCell(Cell[][] map, List<StringBuilder> printableMap, int row, int col, BoardControllerImpl board) {
         String component = getCellComponent(row/3, col, board);
         if (map[row/3][col].getType() == 2)
             component = "X X X";
@@ -85,7 +86,7 @@ public class BoardView {
         }
     }
 
-    public static void show(BoardModel board) {
+    public static void show(BoardModel board, BoardControllerImpl boardController) {
         int size = 8;
 
         List<StringBuilder> printableMap = new ArrayList<StringBuilder>();
@@ -97,7 +98,7 @@ public class BoardView {
                     if (row % 2 == 0){
                         createOutterCell(board.getCells(), printableMap, row, col);
                     }else{
-                        createInnerCell(board.getCells(), printableMap, row, col, board);
+                        createInnerCell(board.getCells(), printableMap, row, col, boardController);
                     }
 
                     if (col == size - 1)
@@ -108,7 +109,7 @@ public class BoardView {
                     if (row % 2 == 1){
                         createOutterCell(board.getCells(), printableMap, row, col);
                     }else{
-                        createInnerCell(board.getCells(), printableMap, row, col, board);
+                        createInnerCell(board.getCells(), printableMap, row, col, boardController);
                     }
 
                     if (col == size - 1)

@@ -11,8 +11,8 @@ import state.WalkState;
 import utils.Text;
 import view.MarketView;
 import view.MonsterView;
+import model.board.Position;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,18 +95,18 @@ public class LegendsOfValor extends RPGGame {
     public Position getPosition(CharacterController character) {
         int index = getTeamController().getHeroControllerList().indexOf(character);
         if (index != -1) {
-            return getBoardController().getHeroPosition(index);
+            return boardController.getHero_positions(index);
         }
         index = monsterControllerList.indexOf(character);
         if (index != -1) {
-            return getBoardController().getMonsterPosition(index);
+            return boardController.getMonster_positions(index);
         }
         return null;
     }
 
     @Override
     protected void initGame() {
-        getBoardController().init();
+        getBoardController().initBoard();
     }
 
     @Override

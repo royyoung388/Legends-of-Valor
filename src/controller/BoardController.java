@@ -3,7 +3,12 @@ package controller;
 import model.board.LegendMarker;
 import model.board.Marker;
 import model.board.Cell;
+import model.board.Position;
+import model.hero.Hero;
+import model.monster.Monster;
 import utils.Dice;
+
+import java.util.ArrayList;
 
 
 /***
@@ -11,6 +16,14 @@ import utils.Dice;
  */
 public interface BoardController {
     void fill(Marker[][] markers);
+
+    int getHero_num();
+
+    int getMonster_num();
+
+    Position getHero_positions(int index);
+
+    Position getMonster_positions(int index);
 
     Marker moveTo(int row, int column);
 
@@ -35,6 +48,10 @@ public interface BoardController {
     Cell getCell(int row, int col);
 
     void initBoard();
+
+    ArrayList<Hero> find_fight_hero();
+
+    ArrayList<Monster> find_fight_monster();
 //
 //    void setMarker(int row, int column, model.board.Marker mark);
 //
