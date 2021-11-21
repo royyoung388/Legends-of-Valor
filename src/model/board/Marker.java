@@ -11,7 +11,7 @@ public class Marker {
     }
 
     public Marker() {
-        this("");
+        this(LegendMarker.NULL);
     }
 
     public String getMark() {

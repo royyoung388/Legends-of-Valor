@@ -1,33 +1,58 @@
 package controller;
 
-import model.board.LegendMarker;
-import model.board.Marker;
 import model.board.Cell;
+import model.board.Marker;
 import model.board.Position;
-import model.hero.Hero;
-import model.monster.Monster;
-import utils.Dice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /***
  * Board controller, control the board
  */
 public interface BoardController {
+    void setCurrent_lane(int current_lane);
+
+    int getCurrent_lane();
+
+    // create new monster for every lane
+    void createNewMonsters();
+
+    // teleport to other lane
+    boolean teleport(HeroController heroController, int lane);
+
+    void setHeroList(List<HeroController> herolist);
+
+    void setMonsterList(List<MonsterController> monsterlist);
+
+    void removeHero(int index);
+
+    void removeMonster(int index);
+
+    HeroController getHero(int index);
+
+    MonsterController getMonster(int index);
+
+    List<MonsterController> getMonsterList();
+
     void fill(Marker[][] markers);
 
     int getHero_num();
 
     int getMonster_num();
 
-    Position getHero_positions(int index);
+    Position getPosition(CharacterController characterController);
 
-    Position getMonster_positions(int index);
+    List<Position> getHeroPositionList();
 
-    Marker moveTo(int row, int column);
+    Position getHeroPosition(int index);
 
-    Marker getMarker(int row, int column);
+    Position getMonsterPosition(int index);
+
+    void setPosition(CharacterController characterController, Position position);
+
+    Cell moveTo(int fromRow, int fromColumn, int row, int column);
 
     void show();
 
@@ -41,17 +66,15 @@ public interface BoardController {
 
     void setMarker(int row, int column, Marker marker);
 
-    void setPlayer(int row, int column);
-
     void setCell(int i, int j, String nexus);
 
     Cell getCell(int row, int col);
 
     void initBoard();
 
-    ArrayList<Hero> find_fight_hero();
+    ArrayList<HeroController> find_fight_hero();
 
-    ArrayList<Monster> find_fight_monster();
+    ArrayList<MonsterController> find_fight_monster();
 //
 //    void setMarker(int row, int column, model.board.Marker mark);
 //

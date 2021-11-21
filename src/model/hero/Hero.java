@@ -10,7 +10,7 @@ public abstract class Hero extends Character implements Cloneable {
     public static final int PALADIN = 0;
     public static final int WARRIOR = 1;
     public static final int SORCERER = 2;
-    public static final String[] TYPE = {"model.hero.Paladin", "model.item.Warrior", "model.hero.Sorcerer"};
+    public static final String[] TYPE = {"Paladin", "Warrior", "Sorcerer"};
 
     private final int type;
     private int mana;
@@ -26,7 +26,7 @@ public abstract class Hero extends Character implements Cloneable {
     }
 
     public Hero(int type, String name, int mana, int strength, int agility, int dexterity, int money, int experience) {
-        super(name, 1, 100, 500, 500, 0);
+        super(name, 1, 100, 500, 0, 0);
         this.type = type;
         this.mana = mana;
         this.strength = strength;
@@ -34,6 +34,11 @@ public abstract class Hero extends Character implements Cloneable {
         this.dexterity = dexterity;
         this.money = money;
         this.experience = experience;
+    }
+
+    public static String header() {
+        return String.format("%20s%10s%10s%10s%10s%10s%10s%10s%10s%10s%10s%10s%10s", "Name", "Type", "Level", "HP",
+                "MP", "Damage", "Defense", "Dodge", "Strength", "Agility", "Dexterity", "Money", "Exp");
     }
 
     public int getType() {

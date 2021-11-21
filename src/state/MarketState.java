@@ -30,8 +30,10 @@ public class MarketState extends BaseState {
             return;
         }
 
-        if (Integer.parseInt(strings[0]) == Config.SELL)
+        if (Integer.parseInt(strings[0]) == Config.SELL) {
             context.addState(new SellState());
+            return;
+        }
 
         if (strings.length < 2)
             return;

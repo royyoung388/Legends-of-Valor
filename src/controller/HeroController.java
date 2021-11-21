@@ -14,6 +14,8 @@ public interface HeroController extends CharacterController {
     @Override
     Hero getCharacter();
 
+    void respawn();
+
     void gainExp(int exp);
 
     int hpRegain();

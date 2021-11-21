@@ -1,14 +1,10 @@
 package state;
 
 import controller.*;
-import factory.MonsterFactory;
 import game.LegendsOfValor;
-import model.monster.Monster;
 import utils.Text;
 import view.FightView;
-import view.MonsterView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,22 +16,28 @@ public class FightState extends BaseState {
     @Override
     public void doAction(Context context, String action) {
         LegendsOfValor game = (LegendsOfValor) context.getRpgGame();
+        BoardController boardController = game.getBoardController();
         TeamController team = game.getTeamController();
+        List<MonsterController> monsterControllerList = boardController.find_fight_monster();
+
         FightController fightController = new FightControllerImpl(
                 team,
-                team.getHeroController(game.getLane()),
-                initMonster(1, team.getHeroController(game.getLane()).getLevel()).get(0),
+                boardController.find_fight_hero(),
+                monsterControllerList,
                 new FightView());
         fightController.start();
         context.popState();
+
+        // hero win, delete monster
+        if (fightController.isHeroWin())
+            for (MonsterController monsterController : monsterControllerList) {
+                int index = boardController.getMonsterList().indexOf(monsterController);
+                boardController.removeMonster(index);
+            }
     }
 
     @Override
     public void showPrompt(Context context) {
         System.out.println(Text.FIGHT);
-    }
-
-    private List<MonsterController> initMonster(int count, int level) {
-
     }
 }

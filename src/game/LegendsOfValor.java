@@ -4,6 +4,7 @@ import controller.*;
 import factory.HeroFactory;
 import factory.MonsterFactory;
 import model.MarketModel;
+import model.board.Position;
 import model.hero.Hero;
 import model.monster.Monster;
 import state.FightState;
@@ -11,7 +12,6 @@ import state.WalkState;
 import utils.Text;
 import view.MarketView;
 import view.MonsterView;
-import model.board.Position;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,12 +23,13 @@ public class LegendsOfValor extends RPGGame {
     private Scanner scanner;
     private MarketController marketController;
     private List<MonsterController> monsterControllerList;
-    private Iterator<MonsterController> monsterIter;
     private Iterator<HeroController> heroIter;
     // current lane
     private int lane = 0;
     // record the game status. 0 for quit.
     private int gameFlag = 1;
+    // round counter, create new monster after every 4 round.
+    private int round = 0;
 
     public LegendsOfValor() {
         this(8, 8);
@@ -38,79 +39,67 @@ public class LegendsOfValor extends RPGGame {
         super(row, column);
         scanner = new Scanner(System.in);
         marketController = new MarketControllerImpl(new MarketView(), new MarketModel());
-        // init monster
-        monsterControllerList = new ArrayList<>(3);
-        for (Monster monster : new MonsterFactory().randomChoose(3, 1))
-            monsterControllerList.add(new MonsterControllerImpl(monster, new MonsterView()));
     }
 
     public MarketController getMarketController() {
         return marketController;
     }
 
-    // get current lane to do action.
-    // lane starts from 0
-    public int getLane() {
-        return lane;
-    }
-
-    // set lane
-    public void setLane(int lane) {
-        this.lane = lane % 3;
+    // get current round
+    // when round == 0, then should create new monster
+    public int getRound() {
+        return round % 4;
     }
 
     /***
-     * get next character. The order of the result is:
-     * hero1 - hero2 - hero3 - monster1- monster2 - monster3 - null
+     * get next hero. The order of the result is:
+     * hero1 - hero2 - hero3 - null
      * and then repeat
-     * Be careful when the hero or monster is died.
+     * Be careful when the hero is died.
      * {@link CharacterController#isDied()}
      * @return
      */
-    public CharacterController nextCharacter() {
-        if (monsterIter == null || heroIter == null) {
-            monsterIter = monsterControllerList.iterator();
+    public HeroController nextHero() {
+        if (heroIter == null) {
             heroIter = getTeamController().getHeroControllerList().iterator();
         }
 
-        // hero
         if (heroIter.hasNext()) {
             return heroIter.next();
-        } else if (monsterIter.hasNext()) {
-            // monster
-            return monsterIter.next();
         } else {
             // round end, reset
             heroIter = getTeamController().getHeroControllerList().iterator();
-            monsterIter = monsterControllerList.iterator();
-            return null;
+            // create new monster
+            round++;
+            if (getRound() == 0) {
+                boardController.show();
+                boardController.createNewMonsters();
+            }
+            return heroIter.next();
         }
     }
 
-    /***
-     * get position for specific character
-     * @param character
-     * @return null if not found
-     */
-    public Position getPosition(CharacterController character) {
-        int index = getTeamController().getHeroControllerList().indexOf(character);
-        if (index != -1) {
-            return boardController.getHero_positions(index);
-        }
-        index = monsterControllerList.indexOf(character);
-        if (index != -1) {
-            return boardController.getMonster_positions(index);
-        }
-        return null;
+    public boolean hasNextHero() {
+        return heroIter.hasNext();
     }
 
     @Override
     protected void initGame() {
         getBoardController().initBoard();
+        // init mosnter
+        // init monster
+        monsterControllerList = new ArrayList<>(3);
+        for (Monster monster : new MonsterFactory().randomChoose(3, 1))
+            monsterControllerList.add(new MonsterControllerImpl(monster, new MonsterView()));
+        boardController.setMonsterList(monsterControllerList);
     }
 
     @Override
     protected boolean isEnd() {
+        for (Position position : boardController.getHeroPositionList()) {
+            if (position.getRow() == 0)
+                return true;
+        }
         return gameFlag == 0;
     }
 
@@ -132,15 +121,24 @@ public class LegendsOfValor extends RPGGame {
         }
 
         chooseHero();
+        boardController.setHeroList(teamController.getHeroControllerList());
         context.addState(new WalkState());
 
         while (!isEnd()) {
-            context.getState().showPrompt(context);
-            String action = null;
-            if (!(context.getState() instanceof FightState))
-                action = scanner.nextLine();
-            context.getState().doAction(context, action);
+            performState();
         }
+
+        boardController.show();
+        System.out.println(Text.GAME_WIN);
+        System.out.println(Text.THANKS);
+    }
+
+    public void performState() {
+        context.getState().showPrompt(context);
+        String action = null;
+        if (!(context.getState() instanceof FightState))
+            action = scanner.nextLine();
+        context.getState().doAction(context, action);
     }
 
     private void chooseHero() {
@@ -177,12 +175,17 @@ public class LegendsOfValor extends RPGGame {
 
         String id = null;
         do {
-            System.out.println("\nInput number to choose your legend: (press 0 to stop choosing)");
+            System.out.println("\nInput number to choose your legend: (Start with 3 heros)");
             id = scanner.next();
             if (Integer.parseInt(id) > 0 && Integer.parseInt(id) < heroList.size()) {
                 teamController.addHero(heroList.get(Integer.parseInt(id) - 1));
                 teamController.showTeam();
             }
-        } while (!id.equals("0") || teamController.size() < 3);
+            if (teamController.size() >= 3) {
+                // skip /n
+                scanner.nextLine();
+                break;
+            }
+        } while (true);
     }
 }

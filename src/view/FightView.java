@@ -4,8 +4,10 @@ import controller.CharacterController;
 import controller.HeroController;
 import controller.MonsterController;
 import model.Character;
+import utils.ColorUtils;
 import utils.Text;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -51,21 +53,24 @@ public class FightView {
     }
 
     public void dodgeLog(Character attacker, Character defender) {
-        stringBuilder.append(" - ").append(defender.getName()).append(" dodges ").append(attacker.getName()).append("'s attack\n");
+        stringBuilder.append(" - ").append(defender.getName()).append(ColorUtils.GREEN + " dodges " + ColorUtils.RESET)
+                .append(attacker.getName()).append("'s attack\n");
     }
 
     public void attackLog(Character attacker, Character defender, int damage) {
-        stringBuilder.append(" + ").append(attacker.getName()).append(" |attack| ")
+        stringBuilder.append(" + ").append(attacker.getName()).append(ColorUtils.RED + " |attack| " + ColorUtils.RESET)
                 .append(defender.getName()).append(". Damage: ").append(damage).append("\n");
     }
 
     public void castLog(Character attacker, Character defender, String name, int damage) {
-        stringBuilder.append(" + ").append(attacker.getName()).append(" |cast ").append(name).append(" to| ")
+        stringBuilder.append(" + ").append(attacker.getName()).append(ColorUtils.BLUE + " |cast ")
+                .append(name).append(" to| " + ColorUtils.RESET)
                 .append(defender.getName()).append(". Damage: ").append(damage).append("\n");
     }
 
     public void itemLog(Character character, String name) {
-        stringBuilder.append(" * ").append(character.getName()).append(" |Used model.item.Item| ").append(name).append("\n");
+        stringBuilder.append(" * ").append(character.getName()).append(ColorUtils.YELLOW + " |Used Item| " + ColorUtils.RESET)
+                .append(name).append("\n");
     }
 
     public void regainLog(Character character, int hp, int mp) {
@@ -97,23 +102,31 @@ public class FightView {
         System.out.println("+++++++++++++++++++++++++++++++++");
     }
 
-    public void showInformation(HeroController hero, MonsterController monster) {
-        hero.show();
+    public void showInformation(List<HeroController> heroControllerList, List<MonsterController> monsterControllerList) {
+        // show hero
         System.out.println("===== Your Team =====");
         System.out.println("   " + HeroView.header());
-        System.out.printf("%3d%s\n", 1, hero);
-        System.out.println("======================\n");
+        for (int i = 0; i < heroControllerList.size(); i++) {
+            if (heroControllerList.get(i).isDied())
+                continue;
+            System.out.printf("%3d%s\n", i + 1, heroControllerList.get(i));
+        }
+        System.out.println("=========================\n");
 
-        if (monster != null) {
+        // show monster
+        if (monsterControllerList != null) {
             System.out.println("------ Monster Team ------");
             System.out.println("   " + MonsterView.header());
-            if (!monster.isDied())
-                System.out.printf("%3d%s\n", 1, monster);
-            System.out.println("--------------------\n");
+            for (int i = 0; i < monsterControllerList.size(); i++) {
+                if (monsterControllerList.get(i).isDied())
+                    continue;
+                System.out.printf("%3d%s\n", i + 1, monsterControllerList.get(i));
+            }
+            System.out.println("----------------------------\n");
         }
     }
 
-    public void showInformation(HeroController hero) {
-        showInformation(hero, null);
+    public void showInformation(List<HeroController> heroControllerList) {
+        showInformation(heroControllerList, null);
     }
 }

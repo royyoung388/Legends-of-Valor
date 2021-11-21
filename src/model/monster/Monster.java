@@ -9,7 +9,7 @@ public abstract class Monster extends Character {
     public static final int DRAGON = 0;
     public static final int SPIRIT = 1;
     public static final int EXOSKELETON = 2;
-    public static final String[] TYPE = {"model.monster.Dragon", "model.monster.Spirit", "model.monster.Exoskeleton"};
+    public static final String[] TYPE = {"Dragon", "Spirit", "Exoskeleton"};
 
     private final int type;
 
@@ -27,10 +27,10 @@ public abstract class Monster extends Character {
     public int getType() {
         return type;
     }
-//
-//    public static String header() {
-//        return String.format("%20s%10s%10s%10s%10s%10s%10s", "Name", "Type", "HP", "Level", "Damage", "Defense", "Dodge");
-//    }
+
+    public static String header() {
+        return String.format("%20s%10s%10s%10s%10s%10s%10s", "Name", "Type", "HP", "Level", "Damage", "Defense", "Dodge");
+    }
 
     @Override
     public String toString() {

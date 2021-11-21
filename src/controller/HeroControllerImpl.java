@@ -30,6 +30,13 @@ public class HeroControllerImpl extends CharacterControllerImpl implements HeroC
     }
 
     @Override
+    public void respawn() {
+        Hero hero = getCharacter();
+        hero.setHp(getLevel() * 50);
+        hero.setMana(getLevel() * 50);
+    }
+
+    @Override
     public void gainExp(int exp) {
         hero.setExperience(hero.getExperience() + exp);
         if (hero.getExperience() > hero.getLevel() * 10) {
