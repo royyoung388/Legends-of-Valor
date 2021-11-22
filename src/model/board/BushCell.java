@@ -1,13 +1,13 @@
 package model.board;
 
 // bush
-public class Bush_Cell extends Cell{
-    public Bush_Cell(Marker mark) {
+public class BushCell extends Cell{
+    public BushCell(Marker mark) {
         super(mark);
         type = 4;
     }
 
-    public Bush_Cell() {
+    public BushCell() {
         super();
         type = 4;
     }

@@ -1,13 +1,13 @@
 package model.board;
 
 // Koulou
-public class Koulou_Cell extends Cell {
-    public Koulou_Cell(Marker mark) {
+public class KoulouCell extends Cell {
+    public KoulouCell(Marker mark) {
         super(mark);
         type = 6;
     }
 
-    public Koulou_Cell() {
+    public KoulouCell() {
         super();
         type = 6;
     }

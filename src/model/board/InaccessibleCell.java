@@ -1,13 +1,13 @@
 package model.board;
 
 // inaccessible cell
-public class Inaccessible_Cell extends Cell{
-    public Inaccessible_Cell(Marker mark) {
+public class InaccessibleCell extends Cell{
+    public InaccessibleCell(Marker mark) {
         super(mark);
         type = 2;
     }
 
-    public Inaccessible_Cell() {
+    public InaccessibleCell() {
         super();
         type = 2;
     }

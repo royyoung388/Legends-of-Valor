@@ -1,13 +1,13 @@
 package model.board;
 
 // plain cell
-public class Plain_Cell extends Cell{
-    public Plain_Cell(Marker mark) {
+public class PlainCell extends Cell{
+    public PlainCell(Marker mark) {
         super(mark);
         type = 3;
     }
 
-    public Plain_Cell() {
+    public PlainCell() {
         super();
         type = 3;
     }

@@ -1,13 +1,13 @@
 package model.board;
 
 // Nexus
-public class Nexus_Cell extends Cell{
-    public Nexus_Cell(Marker mark) {
+public class NexusCell extends Cell{
+    public NexusCell(Marker mark) {
         super(mark);
         type = 1;
     }
 
-    public Nexus_Cell() {
+    public NexusCell() {
         super();
         type = 1;
     }

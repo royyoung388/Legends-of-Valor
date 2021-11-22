@@ -193,7 +193,7 @@ public class BoardControllerImpl implements BoardController {
             maxRow++;
 
         // find the empty column
-        // 1 no empty left, 2 no empty right
+        // 0 empty left and right, 1 no empty left, 2 no empty right
         int column = 0;
         while (column == 0 && maxRow <= 7) {
             for (Position position : hero_positions) {
@@ -205,14 +205,18 @@ public class BoardControllerImpl implements BoardController {
                 // no empty at right and left
                 if (column == 3) {
                     maxRow++;
-                    column = 0;
+                    column = -1;
                     break;
                 }
             }
+            if (column == -1)
+                column = 0;
+            else if (column == 0)
+                column = 2;
         }
 
         // no empty slot
-        if (column == 0)
+        if (maxRow > 7)
             return false;
 
         int index = herolist.indexOf(heroController);

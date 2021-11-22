@@ -2,8 +2,6 @@ package model;
 
 import model.board.*;
 
-import java.util.ArrayList;
-
 /***
  * board.Board, made by cells.
  * set the board size, and record the chess mark in the board
@@ -66,22 +64,22 @@ public class BoardModel {
     public void createCell(int row, int column, String str) {
         switch (str){
             case LegendMarker.NEXUS:
-                cells[row][column] = new Nexus_Cell();
+                cells[row][column] = new NexusCell();
                 break;
             case LegendMarker.INACCESSIBLE:
-                cells[row][column] = new Inaccessible_Cell();
+                cells[row][column] = new InaccessibleCell();
                 break;
             case LegendMarker.PLAIN:
-                cells[row][column] = new Plain_Cell();
+                cells[row][column] = new PlainCell();
                 break;
             case LegendMarker.BUSH:
-                cells[row][column] = new Bush_Cell();
+                cells[row][column] = new BushCell();
                 break;
             case LegendMarker.CAVE:
-                cells[row][column] = new Cave_Cell();
+                cells[row][column] = new CaveCell();
                 break;
             case LegendMarker.KOULOU:
-                cells[row][column] = new Koulou_Cell();
+                cells[row][column] = new KoulouCell();
         }
     }
 
